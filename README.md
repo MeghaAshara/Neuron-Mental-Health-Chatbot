@@ -1,10 +1,6 @@
 # 🧠 Neuron — Mental Health Analytics Platform
-**GTU Internship 2026 | Problem Domain 5: Healthcare & Medical Analytics**
-
----
 
 ## 📁 Project Structure
-
 ```
 Neuron/
 │
@@ -21,22 +17,7 @@ Neuron/
 └── requirements.txt
 ```
 
----
-
-## ✅ GTU Objectives Covered
-
-| # | GTU Objective | Where |
-|---|---|---|
-| 1 | EDA on patient/clinical datasets | Tab 3 — 8 Plotly charts |
-| 2 | Identify key health indicators | Tab 4 — Feature importance |
-| 3 | ML model for risk prediction | Tab 2 — Random Forest (4 classes) |
-| 4 | Deep learning (signal analysis) | Extend: HuggingFace DistilBERT |
-| 5 | Predictive system for early diagnosis | Tab 2 — PHQ-9 → risk → recommendations |
-
----
-
 ## 🚀 Setup & Run
-
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
@@ -53,8 +34,6 @@ streamlit run app.py
 # Open http://localhost:8501
 ```
 
----
-
 ## 📱 App Tabs
 
 | Tab | Module | What it does |
@@ -63,8 +42,6 @@ streamlit run app.py
 | 📋 Risk Assessment | `ml_model.py` | PHQ-9 intake form → ML prediction → recommendations |
 | 📊 Data Insights | `eda.py` | 8 interactive EDA charts + KPIs + raw data download |
 | 🤖 ML Model Info | `ml_model.py` | Feature importance, confusion matrix, pipeline diagram, GTU checklist |
-
----
 
 ## 🔧 Extending with Deep Learning
 
