@@ -1,9 +1,4 @@
 """
-eda.py
-------
-All Exploratory Data Analysis functions for Neuron.
-Each function returns a Plotly figure ready to pass to st.plotly_chart().
-
 Standalone run:  python eda.py   (prints dataset summary)
 """
 
@@ -15,7 +10,7 @@ import plotly.graph_objects as go
 
 DATA_PATH = "data/mental_health_dataset.csv"
 
-# ── Shared style ───────────────────────────────────────────────────────────────
+#Shared style
 RISK_COLORS = {
     "Minimal":  "#22c55e",
     "Mild":     "#eab308",
@@ -35,14 +30,12 @@ BASE_LAYOUT = dict(
     yaxis=dict(gridcolor="#b8ddd0", linecolor="#8ecfbb", tickcolor="#2a6858"),
 )
 
-
-# ── Data loader ────────────────────────────────────────────────────────────────
+#Data loader
 def load_data() -> pd.DataFrame:
     if not os.path.exists(DATA_PATH):
         sys.path.insert(0, "data")
         import generate_dataset  # noqa
     return pd.read_csv(DATA_PATH)
-
 
 def summary_stats(df: pd.DataFrame) -> dict:
     return {
@@ -54,8 +47,7 @@ def summary_stats(df: pd.DataFrame) -> dict:
         "high_risk_pct": round(df["risk_level"].isin(["Moderate","Severe"]).mean()*100, 1),
     }
 
-
-# ── Chart 1 — Risk distribution bar ───────────────────────────────────────────
+#Chart 1 — Risk distribution bar
 def chart_risk_distribution(df: pd.DataFrame) -> go.Figure:
     counts = df["risk_level"].value_counts().reindex(RISK_ORDER)
     fig = go.Figure(go.Bar(
@@ -71,8 +63,7 @@ def chart_risk_distribution(df: pd.DataFrame) -> go.Figure:
     )
     return fig
 
-
-# ── Chart 2 — Age by risk box ──────────────────────────────────────────────────
+#Chart 2 — Age by risk box
 def chart_age_by_risk(df: pd.DataFrame) -> go.Figure:
     fig = px.box(
         df, x="risk_level", y="age",
@@ -83,8 +74,7 @@ def chart_age_by_risk(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(**BASE_LAYOUT)
     return fig
 
-
-# ── Chart 3 — Gender × risk grouped bar ───────────────────────────────────────
+#Chart 3 — Gender × risk grouped bar
 def chart_gender_risk(df: pd.DataFrame) -> go.Figure:
     ct = df.groupby(["gender", "risk_level"]).size().reset_index(name="count")
     fig = px.bar(
@@ -96,8 +86,7 @@ def chart_gender_risk(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(**BASE_LAYOUT)
     return fig
 
-
-# ── Chart 4 — Sleep vs PHQ-9 scatter ──────────────────────────────────────────
+#Chart 4 — Sleep vs PHQ-9 scatter
 def chart_sleep_vs_phq(df: pd.DataFrame) -> go.Figure:
     fig = px.scatter(
         df, x="sleep_hours", y="phq9_score",
@@ -108,8 +97,7 @@ def chart_sleep_vs_phq(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(**BASE_LAYOUT)
     return fig
 
-
-# ── Chart 5 — Stress vs Exercise scatter ──────────────────────────────────────
+#Chart 5 — Stress vs Exercise scatter
 def chart_stress_vs_exercise(df: pd.DataFrame) -> go.Figure:
     fig = px.scatter(
         df, x="stress_level", y="exercise_days_per_week",
@@ -120,8 +108,7 @@ def chart_stress_vs_exercise(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(**BASE_LAYOUT)
     return fig
 
-
-# ── Chart 6 — PHQ-9 vs GAD-7 ──────────────────────────────────────────────────
+#Chart 6 — PHQ-9 vs GAD-7
 def chart_phq_vs_gad(df: pd.DataFrame) -> go.Figure:
     fig = px.scatter(
         df, x="phq9_score", y="gad7_score",
@@ -133,8 +120,7 @@ def chart_phq_vs_gad(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(**BASE_LAYOUT)
     return fig
 
-
-# ── Chart 7 — Correlation heatmap ─────────────────────────────────────────────
+#Chart 7 — Correlation heatmap
 def chart_correlation_heatmap(df: pd.DataFrame) -> go.Figure:
     cols = [
         "age", "sleep_hours", "stress_level",
@@ -160,8 +146,7 @@ def chart_correlation_heatmap(df: pd.DataFrame) -> go.Figure:
     )
     return fig
 
-
-# ── Chart 8 — Work hours distribution ─────────────────────────────────────────
+#Chart 8 — Work hours distribution
 def chart_work_hours_dist(df: pd.DataFrame) -> go.Figure:
     fig = px.histogram(
         df, x="work_hours_per_week", color="risk_level",
@@ -172,8 +157,6 @@ def chart_work_hours_dist(df: pd.DataFrame) -> go.Figure:
     )
     fig.update_layout(**BASE_LAYOUT)
     return fig
-
-
 if __name__ == "__main__":
     df = load_data()
     print("Dataset Summary:")
