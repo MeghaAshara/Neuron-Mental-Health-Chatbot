@@ -1,9 +1,4 @@
 """
-ml_model.py
------------
-Trains and saves a Random Forest risk classifier.
-Also exposes predict() for use in app.py.
-
 Standalone run:  python ml_model.py
 """
 
@@ -16,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, classification_report
 
-# ── Constants ──────────────────────────────────────────────────────────────────
+#Constants
 MODEL_PATH    = "models/risk_classifier.pkl"
 SCALER_PATH   = "models/scaler.pkl"
 FEATURES_PATH = "models/features.pkl"
@@ -29,8 +24,7 @@ FEATURES = [
 ]
 RISK_LABELS = ["Minimal", "Mild", "Moderate", "Severe"]
 
-
-# ── Train ──────────────────────────────────────────────────────────────────────
+#Train
 def train():
     """Train and persist the model. Returns (model, scaler, accuracy)."""
     if not os.path.exists(DATA_PATH):
@@ -43,7 +37,6 @@ def train():
 
     scaler   = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-
     X_train, X_test, y_train, y_test = train_test_split(
         X_scaled, y, test_size=0.2, random_state=42, stratify=y
     )
@@ -72,8 +65,7 @@ def train():
     print(f"✅ Saved → {MODEL_PATH}")
     return model, scaler, acc
 
-
-# ── Load (cached) ──────────────────────────────────────────────────────────────
+#Load (cached)
 def load():
     """Load model + scaler from disk, training first if missing."""
     if not os.path.exists(MODEL_PATH):
@@ -83,8 +75,7 @@ def load():
     features = joblib.load(FEATURES_PATH)
     return model, scaler, features
 
-
-# ── Predict ────────────────────────────────────────────────────────────────────
+#Predict
 def predict(age, sleep_hours, stress_level, exercise_days,
             social_support, work_hours, screen_time):
     """
@@ -103,8 +94,7 @@ def predict(age, sleep_hours, stress_level, exercise_days,
     probs    = {RISK_LABELS[i]: round(float(p) * 100, 1) for i, p in enumerate(proba)}
     return label, probs
 
-
-# ── Evaluation helpers (used in app.py Tab 3) ──────────────────────────────────
+#Evaluation helpers (used in app.py Tab 3)
 def get_eval_data():
     """Returns y_test, y_pred, accuracy for confusion matrix display."""
     model, scaler, _ = load()
@@ -117,7 +107,6 @@ def get_eval_data():
     y_pred = model.predict(X_test)
     return y_test, y_pred, accuracy_score(y_test, y_pred)
 
-
 def get_feature_importance():
     """Returns sorted (feature_name, importance) list."""
     model, _, features = load()
@@ -126,7 +115,6 @@ def get_feature_importance():
         key=lambda x: x[1]
     )
     return pairs
-
 
 if __name__ == "__main__":
     train()
