@@ -1,9 +1,4 @@
 """
-chatbot.py
-----------
-Ollama-powered mental health chatbot.
-Exposes stream_response() and get_models() for use in app.py.
-
 Standalone test:
     python chatbot.py
 """
@@ -34,11 +29,10 @@ If the user expresses suicidal thoughts, self-harm, or acute crisis:
   1. Validate their feelings without minimising them
   2. Firmly encourage them to contact a professional or helpline immediately
   3. Provide: iCall India — 9152987821 | Vandrevala Foundation — 1860-2662-345
-
+  
 Tone: warm, hopeful, grounded, professional."""
 
-
-# ── Core streaming function ────────────────────────────────────────────────────
+#Core streaming function
 def stream_response(messages: list, model: str = DEFAULT_MODEL):
     """
     Generator — yields text chunks from Ollama as they arrive.
@@ -76,14 +70,12 @@ def stream_response(messages: list, model: str = DEFAULT_MODEL):
     except Exception as exc:
         yield f"❌ Unexpected error: {exc}"
 
-
-# ── Non-streaming helper ───────────────────────────────────────────────────────
+#Non-streaming helper
 def get_response(messages: list, model: str = DEFAULT_MODEL) -> str:
     """Blocking — returns the full response string."""
     return "".join(stream_response(messages, model))
 
-
-# ── Available models ───────────────────────────────────────────────────────────
+#Available models
 def get_models() -> list[str]:
     """Returns list of locally available Ollama model names."""
     try:
@@ -93,8 +85,7 @@ def get_models() -> list[str]:
     except Exception:
         return [DEFAULT_MODEL]
 
-
-# ── Crisis keyword detector ────────────────────────────────────────────────────
+#Crisis keyword detector
 CRISIS_KEYWORDS = [
     "suicide", "suicidal", "kill myself", "end my life",
     "self-harm", "self harm", "hurt myself", "don't want to live",
@@ -106,9 +97,7 @@ def is_crisis_message(text: str) -> bool:
     lower = text.lower()
     return any(kw in lower for kw in CRISIS_KEYWORDS)
 
-
 CRISIS_ADDENDUM = """
-
 ---
 🆘 **If you are in crisis, please reach out immediately:**
 - **iCall (India):** 9152987821
@@ -119,8 +108,7 @@ CRISIS_ADDENDUM = """
 You don't have to face this alone. Please contact a professional right away.
 """
 
-
-# ── Standalone test ────────────────────────────────────────────────────────────
+#Standalone test
 if __name__ == "__main__":
     print("Neuron Chatbot — CLI Test")
     print("Type 'quit' to exit.\n")
